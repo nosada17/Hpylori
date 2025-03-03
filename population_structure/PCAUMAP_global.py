@@ -16,13 +16,13 @@ warnings.resetwarnings()
 np.random.seed(seed=42)
 
 n_neighbors = 100
-n_components = 2
+n_components = 5
 n_clusters = 5
 
 model_pca = PCA(random_state=42, n_components=n_components, svd_solver='arpack')
 pca_x = model_pca.fit_transform(df)
 
-clusterable_embedding = umap.UMAP(init='random', min_dist=0, n_neighbors = n_neighbors, n_components=n_components, random_state=42)
+clusterable_embedding = umap.UMAP(init='random', min_dist=0, n_neighbors = n_neighbors, n_components=2, random_state=42)
 
 vecs_list = clusterable_embedding.fit_transform(pca_x)
 
