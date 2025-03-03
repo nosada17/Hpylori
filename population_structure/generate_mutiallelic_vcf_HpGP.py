@@ -15,9 +15,6 @@ def define_alt (allele_list):
         if allele_list[i] != 'N' and allele_list[i] != '-' and allele_list[i] != ref and allele_list[i] not in alt_list and allele_list[i] != 'X':
             alt_list.append(allele_list[i])
     return alt_list
-    
-### generationg an alignement index
-#### align nucleotide fasta using amino acid fasta
 
 strain_list = []
 for strain in open("strain_list.txt"): # this is a list of strains, one strain in one line, to be analyzed.
@@ -39,7 +36,7 @@ missing = open(dir+"missing.txt", "w")
 concat_fasta = {}
 position_id = 1
 pos_sum = 0
-### temp.txt is a list of fasta files per gene
+
 for line in open(fastalist):
     file = line[:-1]
     basename = file.replace('.nuc.aligned.fasta', '')
