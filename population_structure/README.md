@@ -1,4 +1,4 @@
-# Description of how the data was processed.
+# Description of how the data was processed
 
-- the alignment files were processed using 
+- Alignment files were processed using `generate_multiallelic_vcf_HpGP.py` script. Output file name is
 
