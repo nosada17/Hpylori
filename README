@@ -1,1 +1,4 @@
-This folder contains python script used for the study by Fukuyo et al. The script is in the population_structure folder.
+This folder contains python script used for the study by Fukuyo et al.
+
+The scripts files for population structure inference are in the population_structure folder.
+Input data and results of dN/dS estimation in PabI using genomegaMap is found in PabI foler. 
