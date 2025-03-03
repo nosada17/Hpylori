@@ -42,20 +42,13 @@ pos_sum = 0
 ### temp.txt is a list of fasta files per gene
 for line in open(fastalist):
     file = line[:-1]
-    print(file)
     basename = file.replace('.nuc.aligned.fasta', '')
     print(basename)
-    HP = basename
-    HP = HP.replace('../multiple_fasta/HpGPcore/', '')
-    basename = basename.replace('../multiple_fasta/HpGPcore/', '')
-    nuc_file =  dir+basename+".nuc.aligned.fasta"
-    nuc_records = list(SeqIO.parse(nuc_file, 'fasta'))
-    
+    nuc_file =  dir+basename+".nuc.aligned.fasta" # change the directory if multifasta files are stored in a different place.
+    nuc_records = list(SeqIO.parse(nuc_file, 'fasta'))  
     nuc_seq_dict = {}
-
     for index, nuc_record in enumerate(nuc_records):
         nuc_seq_dict[nuc_record.id] = str(nuc_record.seq.upper())
-
         
     offset = 0
     ref_sample = ''
