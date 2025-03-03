@@ -24,4 +24,4 @@ plink --bfile ../plink/pylori_HpGP_decomposed_pihat_missing_prunned \
     --out pylori_HpGP_decomposed_pihat_missing_prunned
 ```
 
-The file `pylori_HpGP_decomposed_pihat_missing_prunned` is used for the input of `vcf2genotype.py`, which generates the input file for `PCAUMAP_blobal.py`
+The file `pylori_HpGP_decomposed_pihat_missing_prunned` is used for the input of `vcf2genotype.py`, which generates the input file for `PCAUMAP_global.py`
