@@ -20,7 +20,7 @@ def define_alt (allele_list):
 #### align nucleotide fasta using amino acid fasta
 
 strain_list = []
-for strain in open("strain_list_HpGP_nondup_sorted.txt"): # this is a list of strains, one strain in one line, where nearly identical strins were removed (pihat > 0.9 in PLINK).
+for strain in open("strain_list.txt"): # this is a list of strains, one strain in one line, to be analyzed.
     strain_list.append(strain[:-1])
     
 vcfhead = ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT']
