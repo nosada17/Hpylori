@@ -28,7 +28,7 @@ header = '\t'.join(vcfhead)
 samples = '\t'.join(strain_list)
 
 # output vcf file
-out_vcf = open("../script/io/pylori_HpGP_decomposed.vcf", "w")
+out_vcf = open("pylori_HpGP_decomposed.vcf", "w")
 
 out_vcf.write(header+"\t"+samples+"\n")
 
