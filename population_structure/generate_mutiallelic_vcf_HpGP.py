@@ -1,17 +1,16 @@
-# genrating VCF files
-# msa2vcf.py
+# This script generates vcf file from multiple fasta file
 import collections
+from Bio import SeqIO
+from Bio.Seq import Seq
+import re
 
-dir = "/media/nosada/ToshibaMN12/pylori/multiple_fasta/HpGPcore/"
+dir = "base_directory_name"
 
-
+# list of multifasta files. each file contains multifasta file for one gene (locus)
 fastalist = dir+"fasta_nuc_list"
-# fastalist = "temp_list"
 
 def define_alt (allele_list):
-#     ref = allele_list[0]
     alt_list = []
-#     alt_list.append(ref)
     for i in range (1,len(allele_list)):
         if allele_list[i] != 'N' and allele_list[i] != '-' and allele_list[i] != ref and allele_list[i] not in alt_list and allele_list[i] != 'X':
             alt_list.append(allele_list[i])
@@ -19,27 +18,17 @@ def define_alt (allele_list):
     
 ### generationg an alignement index
 #### align nucleotide fasta using amino acid fasta
-from Bio import SeqIO
-from Bio.Seq import Seq
-import re
 
 strain_list = []
-for strain in open("io/strain_list_HpGP_nondup_sorted.txt"):
+for strain in open("strain_list_HpGP_nondup_sorted.txt"): # this is a list of strains, one strain in one line, where nearly identical strins were removed (pihat > 0.9 in PLINK).
     strain_list.append(strain[:-1])
     
 vcfhead = ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT']
 header = '\t'.join(vcfhead)
 samples = '\t'.join(strain_list)
 
-print(len(strain_list))
-
-
-
+# output vcf file
 out_vcf = open("../script/io/pylori_HpGP_decomposed.vcf", "w")
-# out_vcf_allsites = open(dir+"../plink/pylori_D124_tblastn_allsites.vcf", "w")
-
-# out_annotation = open(dir+"../io/pylori_D124_tblastn.site.txt", "w")
-# out_concat_fasta = open(dir+"../plink/merged.fasta", "w")
 
 out_vcf.write(header+"\t"+samples+"\n")
 
@@ -81,26 +70,20 @@ for line in open(fastalist):
         pos_sum += i
         nuc_list = []
         
-#         nuc_list.append(nuc_seq_dict[ref_sample][i])
         ref_allele = nuc_seq_dict[ref_sample][i]
    
         nX = 0
         filtered = 0
         for nuc in nuc_list:
-#             print(nuc)
             if nuc == 'X' or nuc == '-':
                 nX += 1
-#         print(pos, nX, len(nuc_list))
         if nX >= 0.5 * len(nuc_list):# filter if more than 50% of nuculeotides are X or gaps
             filtered = 1
-#         print(len(strain_list), len(nuc_list))
-#         print(ref_allele, alt, nuc_list)
         pos = i - offset +1
         gappos = i + 1
          
         if ref_allele == '-':
             ID = ref_sample+':'+HP+':-:-'
-            # out_annotation.write(ID+"\t"+HP+":"+str(gappos)+"\t"+str(filtered)+"\n")
             offset += 1
             continue
         for strain in strain_list:
@@ -108,7 +91,6 @@ for line in open(fastalist):
                 nuc_list.append(nuc_seq_dict[strain][i])
             else:
                 nuc_list.append('N')
-#         allele_list = define_alt(nuc_list)
         nuc_list_clean = []
         for nuc in nuc_list:
             if nuc == 'A' or nuc == 'T' or nuc == 'C' or nuc == 'G':
@@ -116,11 +98,9 @@ for line in open(fastalist):
         c = collections.Counter(nuc_list_clean)
         if len(c) <= 1:
             continue
-#         print(HP, pos, c)
         allele_list, counts = zip(*c.most_common())
         ref_allele = allele_list[0]
         alt = allele_list[1:]
-#         nuc_list = nuc_list[1:]
         ref_string = allele_list[0]
         if alt:### skip nonvariant sites
             for i in range(len(alt)):
@@ -142,6 +122,3 @@ for line in open(fastalist):
 
 out_vcf.close() 
 missing.close()
-# out_concat_fasta.close()
-# out_annotation.close()
-
