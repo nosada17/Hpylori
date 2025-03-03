@@ -1,15 +1,14 @@
+# this scirpt convert vcf file to genotype file used for PCAUMAP_blobal.py
+
 import pandas as pd
 import re
 import statistics
 import re
 
-dir = "/media/nosada/ToshibaMN12/pylori/plink/"
+dir = "directory_for_opening"
 
-# output open(dir+"pylori_genotype.txt", "w")
-
-# vcf_open = dir + "pylori_D13.recode.vcf"
-##### LD prunned data, diploid format
-vcf_open = "io/pylori_D9_decomposed_pihat_missing_prunned.vcf"
+##### LD prunned vcf data, diploid format, genotypes are either 0/0, 1/1, or ./.
+vcf_open = "HpGP_decomposed_pihat_missing_prunned.vcf"
 
 with open(vcf_open) as vcf:
     line = vcf.readlines()[6]### depends on how the vcf file was created
@@ -19,7 +18,7 @@ vcf.close()
 
 print(sample_names)
 
-### plinkでサンプル名についてしまった　0_　を削除
+### PLINK add　"0_" to the strain names. removing them. 
 for index, sample in enumerate(sample_names):
     sample_names[index] = re.sub('^0_', '', sample)
     
@@ -33,9 +32,8 @@ df =  pd.DataFrame(data=None, index=sample_names, columns=None, dtype=None, copy
 
 missing = 0
 
-# table = open(dir+"genotype_table.txt", "w")
-#### LD prunned data
-table = open("io/genotype_D9_decomposed_pihat_missing_prunned.txt", "w")
+#### output file
+table = open("io/genotype_HpGP_decomposed_pihat_missing_prunned.txt", "w")
 
 sample_name_string = '\t'.join(sample_names)
 table.write("ID\t"+sample_name_string+"\n")
@@ -55,7 +53,6 @@ with open(vcf_open) as vcf:
                 GT_list[index] = '1'
             elif GT == './.':
                 GT_list[index] = '.'
-#         print(len(GT_list))
         alt = itemList[4].split(',')
         try:
             mode = statistics.mode(GT_list)
@@ -65,20 +62,15 @@ with open(vcf_open) as vcf:
             missing += 1
             continue
         for i, nuc in enumerate(alt):
-#             data = []
             data = ''
             for GT in GT_list:
                 if GT == '.':
                     data += '\t'+str(mode)
                 elif int(GT) == i+1:
-#                     print(i+1, GT)
-#                     data.append('1')
                     data += '\t1'
                 else:
-#                     data.append('0')
                     data += '\t0'
             colname = itemList[2]+"_"+nuc
-#             df[colname] = data
             table.write(colname+data+"\n")
         if nline%10000 == 0:
             print(nline)
