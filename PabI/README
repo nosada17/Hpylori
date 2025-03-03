@@ -1,4 +1,0 @@
-This folder contains files used for the calculation of dN/dS of PabI (HPAG1_0479) using genomegaMap.
-
-HPAG1_0479.nuc.aligned.nonX.fasta: aligned nucleotide fasta file
-HPAG1_0479_dnds_Genbank525.tsv: tab separated text file for the result
